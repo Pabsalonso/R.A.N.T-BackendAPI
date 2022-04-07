@@ -1,0 +1,10 @@
+App\Entity\Recipe:
+    attributes:
+      id:
+        groups: ['recipe']
+      title:
+        groups: ['recipe']
+      text:
+        groups: ['recipe']
+      rating:
+        groups: ['recipe']
