@@ -8,3 +8,7 @@ App\Entity\Recipe:
         groups: ['recipe']
       rating:
         groups: ['recipe']
+      ingredients:
+        groups: ['recipe']
+      steps:
+        groups: ['recipe']

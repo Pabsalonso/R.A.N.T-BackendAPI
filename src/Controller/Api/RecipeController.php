@@ -7,6 +7,7 @@ use App\Repository\RecipeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations;
+use Symfony\Component\HttpFoundation\Request;
 
 class RecipeController extends AbstractFOSRestController{
     /**
@@ -23,12 +24,12 @@ class RecipeController extends AbstractFOSRestController{
      * @Annotations\View(serializerGroups={"recipe"}, serializerEnableMaxDepthChecks=true)
      */
 
-    public function postAction(EntityManagerInterface $em){
+    public function postAction(Request $request, RecipeRepository $recipeRepository){
         $recipe = new Recipe();
-        $recipe->setTitle('Pruebita del fos_res');
-        $recipe->setText('hola');
-        $recipe->setRating(7);
-        $em->persist($recipe);
-        $em->flush();
+        $recipe->setTitle($request->get('title', null));
+        $recipe->setText($request->get('text', null));
+        $recipe->setRating($request->get('rating', null));
+
+        $recipeRepository->add($recipe);
      }
 }
