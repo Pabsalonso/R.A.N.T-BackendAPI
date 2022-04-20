@@ -35,27 +35,27 @@ class RecipeController extends AbstractController{
     }   
 
     /**
-     * @Route("/recipe/new", name = "crear_recipe")
+     * @Route("/recipes/new", name = "crear_recipe")
      */
 
     public function createRecipe(Request $request, EntityManagerInterface $em){
-        $recipe = new Recipe();
-        $recipe->setTitle('Testeando');
-        $recipe->setText('hola');
-        $recipe->setRating(4);
-        $em->persist($recipe);
-        $em->flush();
-        $response = new JsonResponse();
-        $response->setData([
-            'success'=> true,
-            'data'=> [
-                [
-                    'id'=>$recipe->getId(),
-                    'nombre'=> $recipe->getTitle()
-                ],
-            ]
-        ]);
-        return $response;
+        // $recipe = new Recipe();
+        // $recipe->setTitle('Testeando');
+        // $recipe->setText('hola');
+        // $recipe->setRating(4);
+        // $em->persist($recipe);
+        // $em->flush();
+        // $response = new JsonResponse();
+        // $response->setData([
+        //     'success'=> true,
+        //     'data'=> [
+        //         [
+        //             'id'=>$recipe->getId(),
+        //             'nombre'=> $recipe->getTitle()
+        //         ],
+        //     ]
+        // ]);
+        // return $response;
 
     }
 }
