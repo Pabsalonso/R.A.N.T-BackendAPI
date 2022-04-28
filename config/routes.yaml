@@ -5,7 +5,10 @@ controllers:
 api:
     resource: ../src/Controller/Api
     type: annotation
-    prefix: /
+    prefix: /api
+
+api_login_check:
+    path: /api/login_check
 
 kernel:
     resource: ../src/Kernel.php
