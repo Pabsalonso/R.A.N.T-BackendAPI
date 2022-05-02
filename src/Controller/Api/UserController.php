@@ -9,6 +9,7 @@ use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 
 class UserController extends AbstractFOSRestController{
 
@@ -48,25 +49,15 @@ class UserController extends AbstractFOSRestController{
      * @Annotations\Get(path="/profile")
      * @Annotations\View(serializerGroups={"user"}, serializerEnableMaxDepthChecks=true)
      */
-     public function getUserbyToken(Request $request, UserRepository $userRepository)
+     public function getUserbyToken(JWTEncoderInterface $jwtEncoder, Request $request, UserRepository $userRepository)
     {
-        return $this->json([
-            'message' => 'test!',
-     ]);
-        // try {
-        //     $token = $request->headers->get('X-AUTH-TOKEN');
-        //     $credentials = str_replace('Bearer ', '', $token);
-        //     $jwt = (array) JWT::decode(
-        //         $credentials,
-        //         new Key($this->getParameter('jwt_secret'),'HS256')
-        //     );
-        //     return $userRepository
-        //             ->findOneBy([
-        //                     'email' => $jwt['email'],
-        //             ]);
-        // }catch (\Exception $exception) {
-        //         throw new AuthenticationException($exception->getMessage());
-        // }
+        $token = $request->headers->get('Authorization');
+        $token = str_replace('Bearer ', '', $token);
+        $email= $jwtEncoder->decode($token)['email'];
+        return $userRepository
+                    ->findOneBy([
+                            'email' => $email,
+                    ]);
     }
 
 }
