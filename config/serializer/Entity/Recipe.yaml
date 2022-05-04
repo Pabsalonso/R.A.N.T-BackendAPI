@@ -6,6 +6,14 @@ App\Entity\Recipe:
         groups: ['recipe']
       text:
         groups: ['recipe']
+      img:
+        groups: ['recipe']
+      prepTime:
+        groups: ['recipe']
+      dificulty:
+        groups: ['recipe']
+      people:
+        groups: ['recipe']
       rating:
         groups: ['recipe']
       ingredients:

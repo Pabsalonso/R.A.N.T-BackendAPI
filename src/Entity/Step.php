@@ -38,6 +38,16 @@ class Step
      */
     private $recipe;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $stepText;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $stepImg;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -87,6 +97,30 @@ class Step
     public function setRecipe(?Recipe $recipe): self
     {
         $this->recipe = $recipe;
+
+        return $this;
+    }
+
+    public function getStepText(): ?string
+    {
+        return $this->stepText;
+    }
+
+    public function setStepText(string $stepText): self
+    {
+        $this->stepText = $stepText;
+
+        return $this;
+    }
+
+    public function getStepImg(): ?string
+    {
+        return $this->stepImg;
+    }
+
+    public function setStepImg(?string $stepImg): self
+    {
+        $this->stepImg = $stepImg;
 
         return $this;
     }

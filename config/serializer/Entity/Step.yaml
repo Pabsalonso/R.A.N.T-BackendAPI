@@ -1,0 +1,12 @@
+App\Entity\Step:
+    attributes:
+      id:
+        groups: ['step']
+      title:
+        groups: ['step']
+      stepNo:
+        groups: ['step']
+      imgb64:
+        groups: ['step']
+      stepText:
+        groups: ['step']

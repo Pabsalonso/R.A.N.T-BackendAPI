@@ -35,14 +35,39 @@ class Recipe
     private $rating;
 
     /**
-     * @ORM\OneToMany(targetEntity=Ingredient::class, mappedBy="recipe", orphanRemoval=true)
-     */
-    private $ingredients;
-
-    /**
      * @ORM\OneToMany(targetEntity=Step::class, mappedBy="recipe", orphanRemoval=true)
      */
     private $steps;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="recipes")
+     */
+    private $user;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $img;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $prepTime;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $dificulty;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $people;
+
+    /**
+     * @ORM\Column(type="array")
+     */
+    private $ingredients = [];
 
     public function __construct()
     {
@@ -92,36 +117,6 @@ class Recipe
     }
 
     /**
-     * @return Collection<int, ingredient>
-     */
-    public function getIngredients(): Collection
-    {
-        return $this->ingredients;
-    }
-
-    public function addIngredient(Ingredient $ingredient): self
-    {
-        if (!$this->ingredients->contains($ingredient)) {
-            $this->ingredients[] = $ingredient;
-            $ingredient->setRecipe($this);
-        }
-
-        return $this;
-    }
-
-    public function removeIngredient(Ingredient $ingredient): self
-    {
-        if ($this->ingredients->removeElement($ingredient)) {
-            // set the owning side to null (unless already changed)
-            if ($ingredient->getRecipe() === $this) {
-                $ingredient->setRecipe(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, Step>
      */
     public function getSteps(): Collection
@@ -147,6 +142,78 @@ class Recipe
                 $step->setRecipe(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getImg(): ?string
+    {
+        return $this->img;
+    }
+
+    public function setImg(?string $img): self
+    {
+        $this->img = $img;
+
+        return $this;
+    }
+
+    public function getPrepTime(): ?int
+    {
+        return $this->prepTime;
+    }
+
+    public function setPrepTime(int $prepTime): self
+    {
+        $this->prepTime = $prepTime;
+
+        return $this;
+    }
+
+    public function getDificulty(): ?string
+    {
+        return $this->dificulty;
+    }
+
+    public function setDificulty(string $dificulty): self
+    {
+        $this->dificulty = $dificulty;
+
+        return $this;
+    }
+
+    public function getPeople(): ?int
+    {
+        return $this->people;
+    }
+
+    public function setPeople(int $people): self
+    {
+        $this->people = $people;
+
+        return $this;
+    }
+
+    public function getIngredients()
+    {
+        return $this->ingredients;
+    }
+
+    public function setIngredients(array $ingredients): self
+    {
+        $this->ingredients = $ingredients;
 
         return $this;
     }
