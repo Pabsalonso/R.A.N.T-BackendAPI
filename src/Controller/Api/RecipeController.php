@@ -38,7 +38,7 @@ class RecipeController extends AbstractFOSRestController{
         {
         // return $request->request->all();
         $recipe = new Recipe();
-        $requestStep = $request->get('step', null);
+        $requestSteps = $request->get('steps', null);
         $user = $userRepository->find($request->get('userId', null));
         $form = $this->createForm(RecipeFormType::class, $recipe);
         
@@ -48,12 +48,12 @@ class RecipeController extends AbstractFOSRestController{
             $recipe->setUser($user);
             $recipeRepository->add($recipe);
             
-            for ($i=0; $i < count($requestStep); $i++) { 
+            for ($i=0; $i < count($requestSteps); $i++) { 
                 $step = new Step();
-                $step->setTitle($requestStep[$i]['stepTitle']);
-                $step->setStepText($requestStep[$i]['stepText']);
-                $step->setImgb64($requestStep[$i]['stepImg']);
-                $step->setStepNo($requestStep[$i]['stepNo']);
+                $step->setTitle($requestSteps[$i]['stepTitle']);
+                $step->setStepText($requestSteps[$i]['stepText']);
+                $step->setImgb64($requestSteps[$i]['stepImg']);
+                $step->setStepNo($requestSteps[$i]['stepNo']);
                 $step->setRecipe($recipe);
                 $stepRepository->add($step);
             }
