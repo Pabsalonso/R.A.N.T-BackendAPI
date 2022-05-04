@@ -44,6 +44,17 @@ class UserController extends AbstractFOSRestController{
         // ]);
      }
 
+     /**
+     * @Annotations\Post(path="/user/recipes")
+     * @Annotations\View(serializerGroups={"user", "recipe", "step"}, serializerEnableMaxDepthChecks=true)
+     */
+
+    public function getUserRecipes(Request $request, UserRepository $userRepository){
+        $userId = $request->get('userId', null);
+        $user = $userRepository->findOneBy(['id' => $userId,]);
+        return $user->getRecipes();
+    }
+
 
      /**
      * @Annotations\Get(path="/profile")
