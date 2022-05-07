@@ -6,7 +6,7 @@ App\Entity\Step:
         groups: ['step']
       stepNo:
         groups: ['step']
-      imgb64:
+      stepImg:
         groups: ['step']
       stepText:
         groups: ['step']

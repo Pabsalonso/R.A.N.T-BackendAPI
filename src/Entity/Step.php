@@ -28,11 +28,6 @@ class Step
     private $stepNo;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $imgb64;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Recipe::class, inversedBy="steps")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -44,7 +39,7 @@ class Step
     private $stepText;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $stepImg;
 
@@ -73,18 +68,6 @@ class Step
     public function setStepNo(int $stepNo): self
     {
         $this->stepNo = $stepNo;
-
-        return $this;
-    }
-
-    public function getImgb64(): ?string
-    {
-        return $this->imgb64;
-    }
-
-    public function setImgb64(?string $imgb64): self
-    {
-        $this->imgb64 = $imgb64;
 
         return $this;
     }

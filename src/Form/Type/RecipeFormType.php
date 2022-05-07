@@ -23,7 +23,7 @@ class RecipeFormType extends AbstractType
             ->add('people', NumberType::class)
             ->add('ingredients', CollectionType::class, array(
                 'entry_type' => TextType::class,
-                'allow_add' => true, //This should do the trick. 
+                'allow_add' => true,
                 ));
     }
 

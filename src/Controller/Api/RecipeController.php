@@ -52,7 +52,7 @@ class RecipeController extends AbstractFOSRestController{
                 $step = new Step();
                 $step->setTitle($requestSteps[$i]['stepTitle']);
                 $step->setStepText($requestSteps[$i]['stepText']);
-                $step->setImgb64($requestSteps[$i]['stepImg']);
+                $step->setStepImg($requestSteps[$i]['stepImg']);
                 $step->setStepNo($requestSteps[$i]['stepNo']);
                 $step->setRecipe($recipe);
                 $stepRepository->add($step);
