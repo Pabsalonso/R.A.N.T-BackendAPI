@@ -66,20 +66,31 @@ class RecipeController extends AbstractFOSRestController{
      * @Annotations\Put(path="/recipe/edit/{id}")
      * @Annotations\View(serializerGroups={"recipe"}, serializerEnableMaxDepthChecks=true)
      */
-    public function editRecipe(int $id, Request $request, RecipeRepository $recipeRepository, SerializerInterface $serializer){
+    public function editRecipe(int $id, Request $request, RecipeRepository $recipeRepository, StepRepository $stepRepository,){
         $recipe = $recipeRepository->find($id);
-
-        if(!empty($request->get('title', null))) $recipe->setTitle($request->get('title', null));
-        if(!empty($request->get('text', null))) $recipe->setText($request->get('text', null));
-        if(!empty($request->get('rating', null))) $recipe->setRating($request->get('rating', null));
-        // foreach ($request->get('ingredients',null) as $key => $value) {
-        // }
-
-        // if(!empty($request->get('ingredients', null))) $recipe->addIngredient($request->get('ingredients', null));
-        // if(!empty($request->get('steps', null))) $recipe->setTitle($request->get('steps', null));
-
-        // $em->flush();
-        return $request->get('ingredients',null)[0];
+        $recipe->setTitle($request->get('title', null));
+        $recipe->setText($request->get('text', null));
+        $recipe->setIngredients($request->get('ingredients', null));
+        $recipe->setImg($request->get('img', null));
+        $recipe->setPeople($request->get('people', null));
+        $recipe->setDificulty($request->get('difficulty', null));
+        $recipe->setPrepTime($request->get('prepTime', null));
+                
+        $requestSteps = $request->get('steps', null);
+        $stepBuff = $stepRepository->findBy(['recipe' => $id], ['stepNo' => 'ASC']);
+        for ($i=0; $i < count($requestSteps) || $i < count($stepBuff); $i++) {
+            if (!(array_key_exists($i, $requestSteps))) {$stepRepository->remove($stepBuff[$i]);}
+            else{
+                $step = (array_key_exists($i, $stepBuff)) ? $stepBuff[$i] : new Step();
+                $step->setTitle($requestSteps[$i]['stepTitle']);
+                $step->setStepText($requestSteps[$i]['stepText']);
+                $step->setStepImg($requestSteps[$i]['stepImg']);
+                $step->setStepNo($requestSteps[$i]['stepNo']);
+                $step->setRecipe($recipe);
+                $stepRepository->add($step);
+            }
+        }
+        return $recipe;
     }
 
     /**

@@ -6,3 +6,7 @@ App\Entity\User:
         groups: ['user']
       recipes:
         groups: ['user']
+      picture:
+        groups: ['user']
+      name:
+        groups: ['user']

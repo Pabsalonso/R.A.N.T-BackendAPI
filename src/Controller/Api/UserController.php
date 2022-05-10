@@ -21,13 +21,15 @@ class UserController extends AbstractFOSRestController{
     {
         $password = $request->get('password');
         $email = $request->get('email');
+        $picture = $request->get('picture');
+        $name = $request->get('name');
+
         $user = new User();
         $user->setPassword($encoder->hashPassword($user, $password));
         $user->setEmail($email);
+        $user->setPicture($picture);
+        $user->setName($name);
         $userRepository->add($user);
-        return $this->json([
-            'user' => $user->getEmail()
-        ]);
     }
 
     /**
