@@ -52,9 +52,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $name;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Recipe::class, inversedBy="usersFavourite")
+     */
+    private $favourites;
+
     public function __construct()
     {
         $this->recipes = new ArrayCollection();
+        $this->favourites = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -177,6 +183,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Recipe>
+     */
+    public function getFavourites(): Collection
+    {
+        return $this->favourites;
+    }
+
+    public function addFavourite(Recipe $favourite): self
+    {
+        if (!$this->favourites->contains($favourite)) {
+            $this->favourites[] = $favourite;
+        }
+
+        return $this;
+    }
+
+    public function removeFavourite(Recipe $favourite): self
+    {
+        $this->favourites->removeElement($favourite);
 
         return $this;
     }

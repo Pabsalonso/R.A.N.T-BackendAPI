@@ -50,7 +50,7 @@ class RecipeController extends AbstractFOSRestController{
             
             for ($i=0; $i < count($requestSteps); $i++) { 
                 $step = new Step();
-                $step->setTitle($requestSteps[$i]['stepTitle']);
+                $step->setTitle($requestSteps[$i]['title']);
                 $step->setStepText($requestSteps[$i]['stepText']);
                 $step->setStepImg($requestSteps[$i]['stepImg']);
                 $step->setStepNo($requestSteps[$i]['stepNo']);
@@ -73,7 +73,7 @@ class RecipeController extends AbstractFOSRestController{
         $recipe->setIngredients($request->get('ingredients', null));
         $recipe->setImg($request->get('img', null));
         $recipe->setPeople($request->get('people', null));
-        $recipe->setDificulty($request->get('difficulty', null));
+        $recipe->setDificulty($request->get('dificulty', null));
         $recipe->setPrepTime($request->get('prepTime', null));
                 
         $requestSteps = $request->get('steps', null);
@@ -82,7 +82,7 @@ class RecipeController extends AbstractFOSRestController{
             if (!(array_key_exists($i, $requestSteps))) {$stepRepository->remove($stepBuff[$i]);}
             else{
                 $step = (array_key_exists($i, $stepBuff)) ? $stepBuff[$i] : new Step();
-                $step->setTitle($requestSteps[$i]['stepTitle']);
+                $step->setTitle($requestSteps[$i]['title']);
                 $step->setStepText($requestSteps[$i]['stepText']);
                 $step->setStepImg($requestSteps[$i]['stepImg']);
                 $step->setStepNo($requestSteps[$i]['stepNo']);
@@ -100,5 +100,43 @@ class RecipeController extends AbstractFOSRestController{
     public function deleteRecipe(int $id, RecipeRepository $recipeRepository){
         $recipe = $recipeRepository->find($id);
         $recipeRepository->remove($recipe); 
+    }
+
+    /**
+     * @Annotations\Get(path="/recipe/favouriteCheck/{id}")
+     * @Annotations\View(serializerGroups={"recipe", "step"}, serializerEnableMaxDepthChecks=true)
+    */
+
+    public function checkFavourite(
+        int $id,
+        RecipeRepository $recipeRepository,
+        UserRepository $userRepository,
+        Request $request
+    ){
+        $recipe = $recipeRepository->find($id);
+        $user = $userRepository->find($request->get('userId', null));
+        return $recipe->getUsersFavourite()->contains($user);
+    }
+
+     /**
+     * @Annotations\Post(path="/recipe/favourite/{id}")
+     * @Annotations\View(serializerGroups={"recipe", "step"}, serializerEnableMaxDepthChecks=true)
+     */
+
+    public function toggleFavourite(
+        int $id,
+        RecipeRepository $recipeRepository,
+        UserRepository $userRepository,
+        Request $request
+    ){
+        $recipe = $recipeRepository->find($id);
+        $user = $userRepository->find($request->get('userId', null));
+        $isFavourited = $recipe->getUsersFavourite()->contains($user);
+        if($isFavourited) {
+            $recipe->removeUsersFavourite($user);
+        }else{
+            $recipe->addUsersFavourite($user);
+        }
+        $recipeRepository->add($recipe);
     }
 }

@@ -69,10 +69,16 @@ class Recipe
      */
     private $ingredients = [];
 
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="favourites")
+     */
+    private $usersFavourite;
+
     public function __construct()
     {
         $this->ingredients = new ArrayCollection();
         $this->steps = new ArrayCollection();
+        $this->usersFavourite = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -214,6 +220,33 @@ class Recipe
     public function setIngredients(array $ingredients): self
     {
         $this->ingredients = $ingredients;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsersFavourite(): Collection
+    {
+        return $this->usersFavourite;
+    }
+
+    public function addUsersFavourite(User $usersFavourite): self
+    {
+        if (!$this->usersFavourite->contains($usersFavourite)) {
+            $this->usersFavourite[] = $usersFavourite;
+            $usersFavourite->addFavourite($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUsersFavourite(User $usersFavourite): self
+    {
+        if ($this->usersFavourite->removeElement($usersFavourite)) {
+            $usersFavourite->removeFavourite($this);
+        }
 
         return $this;
     }

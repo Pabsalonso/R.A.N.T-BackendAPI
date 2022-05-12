@@ -32,20 +32,6 @@ class UserController extends AbstractFOSRestController{
         $userRepository->add($user);
     }
 
-    /**
-     * @Annotations\Get(path="/user")
-     * @Annotations\View(serializerGroups={"user"}, serializerEnableMaxDepthChecks=true)
-     */
-
-     public function getAction(Request $request, UserRepository $userRepository){
-        return $this->json([
-            'message' => 'test!',
-     ]);
-        // return $userRepository->findOneBy([
-        //     'email'=>$request->get('email'),
-        // ]);
-     }
-
      /**
      * @Annotations\Post(path="/user/recipes")
      * @Annotations\View(serializerGroups={"user", "recipe", "step"}, serializerEnableMaxDepthChecks=true)
@@ -71,6 +57,16 @@ class UserController extends AbstractFOSRestController{
                     ->findOneBy([
                             'email' => $email,
                     ]);
+    }
+
+    /**
+     * @Annotations\Get(path="/user/{id}/favourites")
+     * @Annotations\View(serializerGroups={"user"}, serializerEnableMaxDepthChecks=true)
+     */
+    public function getUserFavourites(int $id, UserRepository $userRepository)
+    {
+        $user = $userRepository->findOneBy(['id' => $id,]);
+        return $user->getFavourites();
     }
 
 }
