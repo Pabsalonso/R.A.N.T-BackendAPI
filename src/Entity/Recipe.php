@@ -74,11 +74,17 @@ class Recipe
      */
     private $usersFavourite;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="recipe", orphanRemoval=true)
+     */
+    private $comments;
+
     public function __construct()
     {
         $this->ingredients = new ArrayCollection();
         $this->steps = new ArrayCollection();
         $this->usersFavourite = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -246,6 +252,36 @@ class Recipe
     {
         if ($this->usersFavourite->removeElement($usersFavourite)) {
             $usersFavourite->removeFavourite($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Comment>
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setRecipe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getRecipe() === $this) {
+                $comment->setRecipe(null);
+            }
         }
 
         return $this;

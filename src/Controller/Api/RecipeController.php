@@ -12,8 +12,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Validator\Constraints\Length;
 
 class RecipeController extends AbstractFOSRestController{
     /**
@@ -103,7 +101,7 @@ class RecipeController extends AbstractFOSRestController{
     }
 
     /**
-     * @Annotations\Get(path="/recipe/favouriteCheck/{id}")
+     * @Annotations\Post(path="/recipe/favouriteCheck/{id}")
      * @Annotations\View(serializerGroups={"recipe", "step"}, serializerEnableMaxDepthChecks=true)
     */
 
@@ -138,5 +136,6 @@ class RecipeController extends AbstractFOSRestController{
             $recipe->addUsersFavourite($user);
         }
         $recipeRepository->add($recipe);
+        return !($isFavourited);
     }
 }

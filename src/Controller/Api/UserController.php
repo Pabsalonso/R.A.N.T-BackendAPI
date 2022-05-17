@@ -44,6 +44,20 @@ class UserController extends AbstractFOSRestController{
     }
 
 
+    /**
+     * @Annotations\Put(path="/user/{id}/edit")
+     * @Annotations\View(serializerGroups={"user"}, serializerEnableMaxDepthChecks=true)
+     */
+
+    public function editUser(int $id, Request $request, UserRepository $userRepository){
+        $user = $userRepository->find($id);
+        $user->setName($request->get('name', null));
+        $user->setPicture($request->get('picture', null));
+
+        $userRepository->add($user);
+        return $user;
+    }
+
      /**
      * @Annotations\Get(path="/profile")
      * @Annotations\View(serializerGroups={"user"}, serializerEnableMaxDepthChecks=true)
@@ -61,7 +75,7 @@ class UserController extends AbstractFOSRestController{
 
     /**
      * @Annotations\Get(path="/user/{id}/favourites")
-     * @Annotations\View(serializerGroups={"user"}, serializerEnableMaxDepthChecks=true)
+     * @Annotations\View(serializerGroups={"recipe", "step"}, serializerEnableMaxDepthChecks=true)
      */
     public function getUserFavourites(int $id, UserRepository $userRepository)
     {
