@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 class RecipeController extends AbstractFOSRestController{
     /**
      * @Annotations\Get(path="/recipes")
-     * @Annotations\View(serializerGroups={"recipe", "step"}, serializerEnableMaxDepthChecks=true)
+     * @Annotations\View(serializerGroups={"recipe", "step", "recipeUser"}, serializerEnableMaxDepthChecks=true)
      */
 
      public function getAction(RecipeRepository $recipeRepository){

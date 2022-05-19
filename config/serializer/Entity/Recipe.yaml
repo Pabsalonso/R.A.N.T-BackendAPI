@@ -20,3 +20,5 @@ App\Entity\Recipe:
         groups: ['recipe']
       steps:
         groups: ['recipe']
+      user:
+        groups: ['recipe']
