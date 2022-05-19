@@ -138,4 +138,27 @@ class RecipeController extends AbstractFOSRestController{
         $recipeRepository->add($recipe);
         return !($isFavourited);
     }
+
+     /**
+     * @Annotations\Post(path="/recipe/rate")
+     * @Annotations\View(serializerGroups={"recipe"}, serializerEnableMaxDepthChecks=true)
+     */
+
+    public function rateRecipe(
+        Request $request,
+        RecipeRepository $recipeRepository
+    ){
+        $recipe = $recipeRepository->find($request->get('recipeId', null));
+        $total=( $recipe->getTotalRatings() == null) ? 0 : $recipe->getTotalRatings();
+        $total += 1;
+        $oldRating=$recipe->getRating();
+
+        $newRating = $oldRating + (($request->get('rating', null) - $oldRating) / $total);
+
+        $recipe->setTotalRatings($total);
+        $recipe->setRating($newRating);
+
+        $recipeRepository->add($recipe);
+        return $newRating;
+    }
 }

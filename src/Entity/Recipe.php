@@ -79,6 +79,11 @@ class Recipe
      */
     private $comments;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $totalRatings;
+
     public function __construct()
     {
         $this->ingredients = new ArrayCollection();
@@ -283,6 +288,18 @@ class Recipe
                 $comment->setRecipe(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTotalRatings(): ?int
+    {
+        return $this->totalRatings;
+    }
+
+    public function setTotalRatings(?int $totalRatings): self
+    {
+        $this->totalRatings = $totalRatings;
 
         return $this;
     }

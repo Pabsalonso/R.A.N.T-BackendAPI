@@ -34,7 +34,7 @@ class UserController extends AbstractFOSRestController{
 
      /**
      * @Annotations\Post(path="/user/recipes")
-     * @Annotations\View(serializerGroups={"user", "recipe", "step"}, serializerEnableMaxDepthChecks=true)
+     * @Annotations\View(serializerGroups={"recipeUser", "recipe", "step"}, serializerEnableMaxDepthChecks=true)
      */
 
     public function getUserRecipes(Request $request, UserRepository $userRepository){
@@ -75,7 +75,7 @@ class UserController extends AbstractFOSRestController{
 
     /**
      * @Annotations\Get(path="/user/{id}/favourites")
-     * @Annotations\View(serializerGroups={"recipe", "step"}, serializerEnableMaxDepthChecks=true)
+     * @Annotations\View(serializerGroups={"recipe", "step", "recipeUser"}, serializerEnableMaxDepthChecks=true)
      */
     public function getUserFavourites(int $id, UserRepository $userRepository)
     {
